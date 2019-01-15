@@ -17,16 +17,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/aexmachina/factory-girl.git"
+    "url": "https://github.com/JustinHallquist/factory-girl"
   },
   "license": "MIT",
   "bugs": {
-    "url": "http://github.com/aexmachina/factory-girl/issues"
+    "url": "https://github.com/JustinHallquist/factory-girl/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/aexmachina/factory-girl/raw/master/LICENSE"
+      "url": "https://github.com/JustinHallquist/factory-girl/raw/master/LICENSE"
     }
   ],
   "dependencies": {
