@@ -1,7 +1,7 @@
 import '../test-helper/testUtils';
-import SequelizeAdapter from '../../src/adapters/SequelizeAdapter';
 import Sequelize from 'sequelize';
 import { expect } from 'chai';
+import SequelizeAdapter from '../../src/adapters/SequelizeAdapter';
 
 const sequelize = new Sequelize(undefined, undefined, undefined, {
   dialect: 'sqlite',
@@ -14,17 +14,17 @@ const Kitten = sequelize.define('kitten', {
   name: Sequelize.STRING,
 });
 
-describe('SequelizeAdapterIntegration', function () {
-  const adapter = new SequelizeAdapter;
+describe('SequelizeAdapterIntegration', function() {
+  const adapter = new SequelizeAdapter();
 
-  before(function (done) {
+  before(function(done) {
     Kitten.sync({ force: true }).then(() => done());
   });
 
-  it('builds models and access attributes correctly', function (done) {
+  it('builds models and access attributes correctly', function(done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
 
-    expect(kitten).to.be.instanceof(Kitten.Instance);
+    expect(kitten).to.be.instanceof(Kitten);
     let name = adapter.get(kitten, 'name', Kitten);
     expect(name).to.be.equal('fluffy');
 
@@ -36,29 +36,29 @@ describe('SequelizeAdapterIntegration', function () {
     done();
   });
 
-  it('saves models correctly', function (done) {
+  it('saves models correctly', function(done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
-    adapter.save(kitten, Kitten)
+    adapter
+      .save(kitten, Kitten)
       .then(k => {
         expect(k).to.have.property('id');
         return k;
       })
       .then(k => k.destroy())
       .then(() => done())
-      .catch(err => done(err))
-    ;
+      .catch(err => done(err));
   });
 
-  it('destroys models correctly', function (done) {
+  it('destroys models correctly', function(done) {
     const kitten = adapter.build(Kitten, { name: 'smellyCat' });
-    adapter.save(kitten, Kitten)
+    adapter
+      .save(kitten, Kitten)
       .then(() => Kitten.count())
       .then(count => expect(count).to.be.equal(1))
       .then(() => adapter.destroy(kitten, Kitten))
       .then(() => Kitten.count())
       .then(count => expect(count).to.be.equal(0))
       .then(() => done())
-      .catch(err => done(err))
-    ;
+      .catch(err => done(err));
   });
 });

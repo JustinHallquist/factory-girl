@@ -1,10 +1,8 @@
-
-const asyncFunction = func => async done => {
+const asyncFunction = func => async () => {
   try {
     await func();
-    done();
   } catch (e) {
-    done(e);
+    // done(e);
   }
 };
 

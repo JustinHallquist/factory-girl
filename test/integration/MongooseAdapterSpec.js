@@ -14,11 +14,11 @@ const kittySchema = mongoose.Schema({
 
 const Kitten = mongoose.model('Kitten', kittySchema);
 
-describe('MongooseAdapterIntegration', function () {
+describe('MongooseAdapterIntegration', function() {
   let mongoUnavailable = false;
-  const adapter = new MongooseAdapter;
+  const adapter = new MongooseAdapter();
 
-  before(function (done) {
+  before(function(done) {
     mongoose.connect('mongodb://localhost/factory_girl_test_db');
     const db = mongoose.connection;
 
@@ -28,10 +28,13 @@ describe('MongooseAdapterIntegration', function () {
     });
 
     db.once('open', () => {
-      const Email = mongoose.model('Email', new mongoose.Schema({
-        subject: String,
-        thread: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread' },
-      }));
+      const Email = mongoose.model(
+        'Email',
+        new mongoose.Schema({
+          subject: String,
+          thread: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread' },
+        }),
+      );
 
       factory.define('email', Email, {
         subject: 'ttt',
@@ -45,7 +48,7 @@ describe('MongooseAdapterIntegration', function () {
     });
   });
 
-  it('builds models and access attributes correctly', function (done) {
+  it('builds models and access attributes correctly', function(done) {
     mongoUnavailable && this.skip();
 
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
@@ -60,20 +63,22 @@ describe('MongooseAdapterIntegration', function () {
     done();
   });
 
-  it('saves models correctly', function () {
+  it('saves models correctly', function() {
     mongoUnavailable && this.skip();
 
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
-    return adapter.save(kitten, Kitten)
+    return adapter
+      .save(kitten, Kitten)
       .then(k => expect(k).to.have.property('_id'))
       .then(() => Kitten.remove({}));
   });
 
-  it('destroys models correctly', function () {
+  it('destroys models correctly', function() {
     mongoUnavailable && this.skip();
 
     const kitten = adapter.build(Kitten, { name: 'smellyCat' });
-    return adapter.save(kitten, Kitten)
+    return adapter
+      .save(kitten, Kitten)
       .then(() => Kitten.count())
       .then(count => expect(count).to.be.equal(1))
       .then(() => adapter.destroy(kitten, Kitten))
@@ -82,11 +87,12 @@ describe('MongooseAdapterIntegration', function () {
   });
 
   /* eslint-disable no-underscore-dangle */
-  it('allows to pass mongo ObjectId as a default attribute', function () {
+  it('allows to pass mongo ObjectId as a default attribute', function() {
     mongoUnavailable && this.skip();
 
     let thread;
-    return factory.create('thread')
+    return factory
+      .create('thread')
       .then(created => (thread = created))
       .then(() => factory.create('email', { thread: thread._id }))
       .then(email => expect(email.thread).to.be.equal(thread._id));

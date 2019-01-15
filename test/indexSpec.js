@@ -15,8 +15,8 @@ import DA from '../src/adapters/DefaultAdapter';
 import MA from '../src/adapters/MongooseAdapter';
 import OA from '../src/adapters/ObjectAdapter';
 
-describe('index', function () {
-  it('exports correctly', function () {
+describe('index', function() {
+  it('exports correctly', function() {
     expect(Factory).to.be.instanceof(FactoryGirl);
 
     expect(BA).to.be.equal(BookshelfAdapter);

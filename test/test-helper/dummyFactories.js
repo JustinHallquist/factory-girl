@@ -6,7 +6,7 @@ Factory.define('PhoneNumber', PhoneNumber, {
   number: '1234567890',
 });
 
-Factory.define('PhoneNumber2', PhoneNumber, function (buildOptions) {
+Factory.define('PhoneNumber2', PhoneNumber, function(buildOptions) {
   const attrs = {
     type: 'mobile',
     number: Factory.seq('PhoneNumber2.number', n => `1234567890-${n}`),

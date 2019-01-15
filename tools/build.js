@@ -10,11 +10,16 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const del = require('del');
 const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
-const pkg = require('../package.json');
 const browserify = require('browserify');
+const pkg = require('../package.json');
+
+const babelPath = path.resolve(`${__dirname}/../.babelrc`);
+const babelConf = fs.readFileSync(babelPath, 'utf8');
+const babelJson = JSON.parse(babelConf);
 
 let promise = Promise.resolve();
 
@@ -22,28 +27,41 @@ let promise = Promise.resolve();
 promise = promise.then(() => del(['dist/*']));
 
 // Compile source code into a distributable format with Babel
-for (const format of ['es6', 'cjs', 'umd']) {
-  promise = promise.then(() => rollup.rollup({
-    entry: 'src/index.js',
-    external: Object.keys(pkg.dependencies),
-    plugins: [babel(Object.assign(pkg.babel, {
-      babelrc: false,
-      exclude: 'node_modules/**',
-      runtimeHelpers: true,
-      presets: pkg.babel.presets.map(
-        x => (x === 'es2015' ? 'es2015-rollup' : x)),
-    }))],
-  }).then(bundle => bundle.write({
-    dest: `dist/${format === 'cjs' ? 'index' : `index.${format}`}.js`,
-    format,
-    sourceMap: true,
-    moduleName: format === 'umd' ? 'Factory' : undefined,
-  })));
+for (const format of ['esm', 'cjs', 'umd']) {
+  promise.then(() => rollup
+    .rollup({
+      input: 'src/index.js',
+      external: Object.keys(pkg.dependencies),
+      plugins: [
+        babel(
+          Object.assign(babelJson, {
+            babelrc: true,
+            exclude: 'node_modules/**',
+            runtimeHelpers: true,
+            presets: babelJson.presets.map(
+              x => (x === 'es2015' ? 'es2015-rollup' : x),
+            ),
+          }),
+        ),
+      ],
+    })).then(bundle => {
+    const file = `./dist/${format === 'cjs' ? 'index' : `index.${format}`}.js`;
+
+    const output = {
+      file,
+      format,
+      sourceMap: true,
+      moduleName: format === 'umd' ? 'Factory' : undefined,
+    };
+
+    if (format === 'umd') output.name = 'umd';
+    bundle.write(output);
+  });
 }
 
 promise = promise.then(() => {
   browserify('src/index.js', { standalone: 'FactoryGirl' })
-    .transform('babelify', { presets: ['es2015', 'stage-0'] })
+    .transform('babelify', { presets: ['@babel/env'] })
     .bundle()
     .pipe(fs.createWriteStream('dist/browser.js'));
 });
@@ -58,17 +76,17 @@ promise = promise.then(() => {
   fs.writeFileSync(
     'dist/package.json',
     JSON.stringify(pkg, null, '  '),
-    'utf-8'
+    'utf-8',
   );
   fs.writeFileSync(
     'dist/LICENSE.txt',
     fs.readFileSync('LICENSE.txt', 'utf-8'),
-    'utf-8'
+    'utf-8',
   );
   fs.writeFileSync(
     'dist/README.md',
     fs.readFileSync('README.md', 'utf-8'),
-    'utf-8'
+    'utf-8',
   );
 });
 
