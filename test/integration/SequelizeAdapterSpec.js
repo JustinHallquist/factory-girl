@@ -14,14 +14,14 @@ const Kitten = sequelize.define('kitten', {
   name: Sequelize.STRING,
 });
 
-describe('SequelizeAdapterIntegration', function() {
+describe('SequelizeAdapterIntegration', function () {
   const adapter = new SequelizeAdapter();
 
-  before(function(done) {
+  before(function (done) {
     Kitten.sync({ force: true }).then(() => done());
   });
 
-  it('builds models and access attributes correctly', function(done) {
+  it('builds models and access attributes correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
 
     expect(kitten).to.be.instanceof(Kitten);
@@ -36,7 +36,7 @@ describe('SequelizeAdapterIntegration', function() {
     done();
   });
 
-  it('saves models correctly', function(done) {
+  it('saves models correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
     adapter
       .save(kitten, Kitten)
@@ -49,7 +49,7 @@ describe('SequelizeAdapterIntegration', function() {
       .catch(err => done(err));
   });
 
-  it('destroys models correctly', function(done) {
+  it('destroys models correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'smellyCat' });
     adapter
       .save(kitten, Kitten)

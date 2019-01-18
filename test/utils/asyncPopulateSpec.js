@@ -1,16 +1,16 @@
 import '../test-helper/testUtils';
-import asyncPopulate from '../../src/utils/asyncPopulate';
 import { expect } from 'chai';
+import asyncPopulate from '../../src/utils/asyncPopulate';
 import asyncFunction from '../test-helper/asyncFunction';
 
-describe('asyncPopulate', function() {
-  it('returns a promise', function() {
+describe('asyncPopulate', function () {
+  it('returns a promise', function () {
     const asyncPopulateP = asyncPopulate({}, {});
     expect(asyncPopulateP.then).to.be.a('function');
     return expect(asyncPopulateP).to.be.eventually.fulfilled;
   });
 
-  it('throws error if target or source is not an object', function() {
+  it('throws error if target or source is not an object', function () {
     const targetP = asyncPopulate(undefined, {});
     const sourceP = asyncPopulate({});
 
@@ -22,7 +22,7 @@ describe('asyncPopulate', function() {
 
   it(
     'populates objects correctly',
-    asyncFunction(async function() {
+    asyncFunction(async function () {
       function Foo() {}
       const source = {
         num: 1,
@@ -92,7 +92,7 @@ describe('asyncPopulate', function() {
 
   it(
     'overrides only provided data',
-    asyncFunction(async function() {
+    asyncFunction(async function () {
       const target = {
         x: {
           y: 1,

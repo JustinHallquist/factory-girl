@@ -1,21 +1,21 @@
 import '../test-helper/testUtils';
-import DefaultAdapter from '../../src/adapters/DefaultAdapter';
 import { expect } from 'chai';
+import DefaultAdapter from '../../src/adapters/DefaultAdapter';
 import DummyModel from '../test-helper/DummyModel';
 import asyncFunction from '../test-helper/asyncFunction';
 
-describe('DefaultAdapter', function() {
-  it('can be created', function() {
+describe('DefaultAdapter', function () {
+  it('can be created', function () {
     const adapter = new DefaultAdapter();
     expect(adapter).to.be.an.instanceof(DefaultAdapter);
   });
 
   const adapter = new DefaultAdapter();
 
-  describe('#build', function() {
+  describe('#build', function () {
     it(
       'builds the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build(DummyModel, {
           name: 'Bruce',
           age: 204,
@@ -28,17 +28,17 @@ describe('DefaultAdapter', function() {
     );
   });
 
-  describe('#save', function() {
+  describe('#save', function () {
     it(
       'calls save on the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const savedModel = await adapter.save(model, DummyModel);
         expect(savedModel.saveCalled).to.be.equal(true);
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = new DummyModel();
       const savedModelP = adapter.save(model, DummyModel);
       expect(savedModelP.then).to.be.a('function');
@@ -47,7 +47,7 @@ describe('DefaultAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const savedModel = await adapter.save(model, DummyModel);
         expect(savedModel).to.be.equal(model);
@@ -55,17 +55,17 @@ describe('DefaultAdapter', function() {
     );
   });
 
-  describe('#destroy', function() {
+  describe('#destroy', function () {
     it(
       'calls destroy on the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const destroyedModel = await adapter.destroy(model, DummyModel);
         expect(destroyedModel.destroyCalled).to.be.equal(true);
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = new DummyModel();
       const destroyedModelP = adapter.destroy(model, DummyModel);
       expect(destroyedModelP.then).to.be.a('function');
@@ -74,7 +74,7 @@ describe('DefaultAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const destroyedModel = await adapter.destroy(model, DummyModel);
         expect(destroyedModel).to.be.equal(model);

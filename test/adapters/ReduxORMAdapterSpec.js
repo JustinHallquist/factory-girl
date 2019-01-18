@@ -1,24 +1,24 @@
 import '../test-helper/testUtils';
-import ReduxORMAdapter from '../../src/adapters/ReduxORMAdapter';
 import { expect } from 'chai';
+import { ORM } from 'redux-orm';
+import ReduxORMAdapter from '../../src/adapters/ReduxORMAdapter';
 import DummyReduxORMModel from '../test-helper/DummyReduxORMModel';
 import asyncFunction from '../test-helper/asyncFunction';
-import { ORM } from 'redux-orm';
 
 const orm = new ORM();
 orm.register(DummyReduxORMModel);
 const session = orm.session();
 
-describe('ReduxORMAdapter', function() {
+describe('ReduxORMAdapter', function () {
   const adapter = new ReduxORMAdapter(session);
-  it('can be created', function() {
+  it('can be created', function () {
     expect(adapter).to.be.an.instanceof(ReduxORMAdapter);
   });
 
-  describe('#build', function() {
+  describe('#build', function () {
     it(
       'builds the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build('DummyReduxORMModel', {
           id: 1,
           type: 'City',
@@ -30,10 +30,10 @@ describe('ReduxORMAdapter', function() {
     );
   });
 
-  describe('#save', function() {
+  describe('#save', function () {
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build('DummyReduxORMModel', {
           id: 1,
           type: 'City',
@@ -44,7 +44,7 @@ describe('ReduxORMAdapter', function() {
         return expect(savedModel).to.eventually.equal(model);
       }),
     );
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = adapter.build('DummyReduxORMModel', {
         id: 1,
         type: 'City',
@@ -57,10 +57,10 @@ describe('ReduxORMAdapter', function() {
     });
   });
   //
-  describe('#destroy', function() {
+  describe('#destroy', function () {
     it(
       'calls remove on the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build('DummyReduxORMModel', {
           id: 1,
           type: 'City',
@@ -72,7 +72,7 @@ describe('ReduxORMAdapter', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = adapter.build('DummyReduxORMModel', {
         id: 1,
         type: 'City',

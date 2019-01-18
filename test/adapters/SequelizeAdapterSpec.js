@@ -1,21 +1,21 @@
 import '../test-helper/testUtils';
-import SequelizeAdapter from '../../src/adapters/SequelizeAdapter';
 import { expect } from 'chai';
+import SequelizeAdapter from '../../src/adapters/SequelizeAdapter';
 import DummySequelizeModel from '../test-helper/DummySequelizeModel';
 import asyncFunction from '../test-helper/asyncFunction';
 
-describe('SequelizeAdapter', function() {
-  it('can be created', function() {
+describe('SequelizeAdapter', function () {
+  it('can be created', function () {
     const adapter = new SequelizeAdapter();
     expect(adapter).to.be.an.instanceof(SequelizeAdapter);
   });
 
   const adapter = new SequelizeAdapter();
 
-  describe('#build', function() {
+  describe('#build', function () {
     it(
       'builds the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build(DummySequelizeModel, {});
         expect(model).to.be.an.instanceof(DummySequelizeModel);
         expect(model.constructorCalled).to.be.equal(true);
@@ -23,17 +23,17 @@ describe('SequelizeAdapter', function() {
     );
   });
 
-  describe('#save', function() {
+  describe('#save', function () {
     it(
       'calls save on the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummySequelizeModel();
         const savedModel = await adapter.save(model, DummySequelizeModel);
         expect(savedModel.saveCalled).to.be.equal(true);
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = new DummySequelizeModel();
       const savedModelP = adapter.save(model, DummySequelizeModel);
       expect(savedModelP.then).to.be.a('function');
@@ -42,7 +42,7 @@ describe('SequelizeAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummySequelizeModel();
         const savedModel = await adapter.save(model, DummySequelizeModel);
         expect(savedModel).to.be.equal(model);
@@ -50,10 +50,10 @@ describe('SequelizeAdapter', function() {
     );
   });
 
-  describe('#destroy', function() {
+  describe('#destroy', function () {
     it(
       'calls destroy on the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummySequelizeModel();
         const destroyedModel = await adapter.destroy(
           model,
@@ -63,7 +63,7 @@ describe('SequelizeAdapter', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const model = new DummySequelizeModel();
       const destroyedModelP = adapter.destroy(model, DummySequelizeModel);
       expect(destroyedModelP.then).to.be.a('function');
@@ -72,7 +72,7 @@ describe('SequelizeAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummySequelizeModel();
         const destroyedModel = await adapter.destroy(
           model,

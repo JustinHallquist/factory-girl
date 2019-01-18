@@ -1,19 +1,19 @@
 import '../test-helper/testUtils';
-import Sequence from '../../src/generators/Sequence';
 import { expect } from 'chai';
-import asyncFunction from '../test-helper/asyncFunction';
 import sinon from 'sinon';
+import Sequence from '../../src/generators/Sequence';
+import asyncFunction from '../test-helper/asyncFunction';
 
-describe('Sequence', function() {
-  describe('#constructor', function() {
-    it('can be created', function() {
+describe('Sequence', function () {
+  describe('#constructor', function () {
+    it('can be created', function () {
       const sequence = new Sequence({});
       expect(sequence).to.be.instanceof(Sequence);
     });
   });
 
-  describe('#reset', function() {
-    it('reset the sequence for all if id not provided', function() {
+  describe('#reset', function () {
+    it('reset the sequence for all if id not provided', function () {
       Sequence.sequences['some.id.1'] = 2;
       Sequence.sequences['some.id.2'] = 2;
       Sequence.reset();
@@ -21,7 +21,7 @@ describe('Sequence', function() {
       expect(Sequence.sequences['some.id.2']).to.not.exist;
     });
 
-    it('reset the sequence for id', function() {
+    it('reset the sequence for id', function () {
       Sequence.sequences['some.id.1'] = 2;
       Sequence.sequences['some.id.2'] = 2;
       Sequence.reset('some.id.1');
@@ -31,15 +31,15 @@ describe('Sequence', function() {
     });
   });
 
-  describe('#generate', function() {
-    it('generates an id if not provided', function() {
+  describe('#generate', function () {
+    it('generates an id if not provided', function () {
       const sequence = new Sequence({});
       sequence.generate();
       expect(sequence.id).to.exist;
       expect(Sequence.sequences[sequence.id]).to.equal(2);
     });
 
-    it('initialises the sequence for id', function() {
+    it('initialises the sequence for id', function () {
       expect(Sequence.sequences['some.id.1']).to.not.exist;
       const sequence = new Sequence({});
       sequence.generate('some.id.1');
@@ -47,7 +47,7 @@ describe('Sequence', function() {
       expect(Sequence.sequences['some.id.1']).to.be.equal(2);
     });
 
-    it('does not reset the sequence for id', function() {
+    it('does not reset the sequence for id', function () {
       expect(Sequence.sequences['some.id.2']).to.not.exist;
       Sequence.sequences['some.id.2'] = 2;
       const sequence = new Sequence({});
@@ -58,7 +58,7 @@ describe('Sequence', function() {
 
     it(
       'generates numbers sequentially',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const sequence = new Sequence({});
         const seq1 = await sequence.generate();
         const seq2 = await sequence.generate();
@@ -70,8 +70,8 @@ describe('Sequence', function() {
 
     it(
       'generates numbers sequentially and calls callback',
-      asyncFunction(async function() {
-        const callback = sinon.spy(function(n) {
+      asyncFunction(async function () {
+        const callback = sinon.spy(function (n) {
           return `value${n}`;
         });
         const sequence = new Sequence({});

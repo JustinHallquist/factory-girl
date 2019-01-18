@@ -18,7 +18,7 @@ export default class Sequence extends Generator {
     }
     id = id || this.id || (this.id = generateId());
     Sequence.sequences[id] = Sequence.sequences[id] || 1;
-    const next = Sequence.sequences[id]++;
+    const next = Sequence.sequences[id] += 1;
     return callback ? callback(next) : next;
   }
 }
@@ -27,7 +27,7 @@ function generateId() {
   let id;
   let i = 0;
   do {
-    id = `_${i++}`;
+    id = `_${i += 1}`;
   } while (id in Sequence.sequences);
   return id;
 }

@@ -9,14 +9,14 @@ import DummyModel from './test-helper/DummyModel';
 import DummyAdapter from './test-helper/DummyAdapter';
 import asyncFunction from './test-helper/asyncFunction';
 
-describe('FactoryGirl', function() {
-  describe('#constructor', function() {
+describe('FactoryGirl', function () {
+  describe('#constructor', function () {
     const factoryGirl = new FactoryGirl();
-    it('can be created', function() {
+    it('can be created', function () {
       expect(factoryGirl).to.be.an.instanceof(FactoryGirl);
     });
 
-    it('defines generator methods', function() {
+    it('defines generator methods', function () {
       expect(factoryGirl.assoc).to.be.a('function');
       expect(factoryGirl.assocMany).to.be.a('function');
       expect(factoryGirl.assocAttrs).to.be.a('function');
@@ -29,14 +29,14 @@ describe('FactoryGirl', function() {
       expect(factoryGirl.oneOf).to.be.a('function');
     });
 
-    it('defines default adapter', function() {
+    it('defines default adapter', function () {
       expect(factoryGirl.getAdapter()).to.be.an.instanceof(DefaultAdapter);
     });
   });
 
-  describe('deprecated methods', function() {
+  describe('deprecated methods', function () {
     const factoryGirl = new FactoryGirl();
-    it('throws error on calling deprecated methods', function() {
+    it('throws error on calling deprecated methods', function () {
       function assocBuild() {
         factoryGirl.assocBuild('whatever');
       }
@@ -50,9 +50,9 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#define', function() {
+  describe('#define', function () {
     const factoryGirl = new FactoryGirl();
-    it('can define factory', function() {
+    it('can define factory', function () {
       factoryGirl.define('factory1', DummyModel, {});
       expect(factoryGirl.getFactory('factory1', false)).to.exist;
       expect(factoryGirl.getFactory('factory1', false)).to.be.an.instanceof(
@@ -60,7 +60,7 @@ describe('FactoryGirl', function() {
       );
     });
 
-    it('can not define factory with same name', function() {
+    it('can not define factory with same name', function () {
       function nameRepeated() {
         factoryGirl.define('factory1', DummyModel, {});
       }
@@ -69,9 +69,9 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#extend', function() {
+  describe('#extend', function () {
     let factoryGirl;
-    beforeEach(function() {
+    beforeEach(function () {
       factoryGirl = new FactoryGirl();
       factoryGirl.define('parent', DummyModel, {
         parent: true,
@@ -79,7 +79,7 @@ describe('FactoryGirl', function() {
       });
     });
 
-    it('can extend defined factory', async function() {
+    it('can extend defined factory', async function () {
       factoryGirl.extend('parent', 'factory1', {
         child: true,
         override: 'child',
@@ -95,7 +95,7 @@ describe('FactoryGirl', function() {
       expect(model.attrs.override).to.equal('child', 'child overrides parent');
     });
 
-    it('model can be overridden', function() {
+    it('model can be overridden', function () {
       factoryGirl.extend(
         'parent',
         'factory1',
@@ -111,21 +111,21 @@ describe('FactoryGirl', function() {
       expect(model).to.be.an.instanceOf(Object);
     });
 
-    it('can not define factory with same name', function() {
+    it('can not define factory with same name', function () {
       function nameRepeated() {
         factoryGirl.extend('parent', 'parent', {});
       }
       expect(nameRepeated).to.throw(Error);
     });
 
-    it('can extend with an initializer function', async function() {
+    it('can extend with an initializer function', async function () {
       factoryGirl.define('parentWithObjectInitializer', Object, {
         parent: true,
       });
       factoryGirl.extend(
         'parentWithObjectInitializer',
         'childWithFunctionInitializer',
-        function(buildOptions) {
+        function (buildOptions) {
           return { child: true, option: buildOptions.option };
         },
       );
@@ -139,8 +139,8 @@ describe('FactoryGirl', function() {
       expect(model.option).to.equal(true, 'build options');
     });
 
-    it('can extend a parent that has an initializer function', async function() {
-      factoryGirl.define('parentWithFunctionInitializer', Object, function(
+    it('can extend a parent that has an initializer function', async function () {
+      factoryGirl.define('parentWithFunctionInitializer', Object, function (
         buildOptions,
       ) {
         return { parent: true, option: buildOptions.option };
@@ -161,17 +161,17 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#getFactory', function() {
+  describe('#getFactory', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, {});
 
-    it('returns requested factory', function() {
+    it('returns requested factory', function () {
       const factory = factoryGirl.getFactory('factory1');
       expect(factory).to.exist;
       expect(factory).to.be.an.instanceof(Factory);
     });
 
-    it('throws error if factory does not exists', function() {
+    it('throws error if factory does not exists', function () {
       function factoryNotExists() {
         factoryGirl.getFactory('factory2');
       }
@@ -180,8 +180,8 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#setAdapter', function() {
-    it('sets the default adapter', function() {
+  describe('#setAdapter', function () {
+    it('sets the default adapter', function () {
       const factoryGirl = new FactoryGirl();
       expect(factoryGirl.getAdapter()).to.be.an.instanceof(DefaultAdapter);
       const dummyAdapter = new DummyAdapter();
@@ -189,7 +189,7 @@ describe('FactoryGirl', function() {
       expect(factoryGirl.getAdapter()).to.be.an.instanceof(DummyAdapter);
     });
 
-    it('sets adapter for factories correctly', function() {
+    it('sets adapter for factories correctly', function () {
       const factoryGirl = new FactoryGirl();
       factoryGirl.define('factory1', DummyModel, {});
       factoryGirl.define('factory2', DummyModel, {});
@@ -216,7 +216,7 @@ describe('FactoryGirl', function() {
       expect(factoryGirl.getAdapter()).to.be.an.instanceof(DefaultAdapter);
     });
 
-    it('sets adapter for multiple factories', function() {
+    it('sets adapter for multiple factories', function () {
       const factoryGirl = new FactoryGirl();
       factoryGirl.define('factory1', DummyModel, {});
       factoryGirl.define('factory2', DummyModel, {});
@@ -245,14 +245,14 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#getAdapter', function() {
+  describe('#getAdapter', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, {});
     factoryGirl.define('factory2', DummyModel, {});
     const dummyAdapter = new DummyAdapter();
     factoryGirl.setAdapter(dummyAdapter, 'factory1');
 
-    it('gets adapter correctly', function() {
+    it('gets adapter correctly', function () {
       const adapter1 = factoryGirl.getAdapter('factory2');
       expect(adapter1).to.be.equal(factoryGirl.getAdapter());
       const adapter2 = factoryGirl.getAdapter('factory1');
@@ -260,13 +260,13 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#attrs', function() {
+  describe('#attrs', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(factoryGirl, 'getFactory');
         await factoryGirl.attrs('factory1');
         expect(spy).to.have.been.calledWith('factory1');
@@ -276,7 +276,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls attrs on the factory with attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'attrs');
         const dummyAttrs = {};
@@ -287,7 +287,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const attrsP = factoryGirl.attrs('factory1');
       expect(attrsP.then).to.be.a('function');
       return expect(attrsP).to.be.eventually.fulfilled;
@@ -295,7 +295,7 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to attrs correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await factoryGirl.attrs('factory1');
         expect(attrs).to.be.eql({
           name: 'Mark',
@@ -305,13 +305,13 @@ describe('FactoryGirl', function() {
     );
   });
 
-  describe('#build', function() {
+  describe('#build', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory and adapter',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy1 = sinon.spy(factoryGirl, 'getFactory');
         const spy2 = sinon.spy(factoryGirl, 'getAdapter');
         await factoryGirl.build('factory1');
@@ -324,7 +324,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls build on the factory with adapter, attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'build');
         const dummyAttrs = {};
@@ -340,7 +340,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const modelP = factoryGirl.build('factory1');
       expect(modelP.then).to.be.a('function');
       return expect(modelP).to.be.eventually.fulfilled;
@@ -348,7 +348,7 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to model correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = await factoryGirl.build('factory1');
         expect(model).to.be.an.instanceof(DummyModel);
         expect(model.attrs.name).to.be.equal('Mark');
@@ -358,7 +358,7 @@ describe('FactoryGirl', function() {
 
     it(
       'invokes afterBuild callback option if any',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(model => model);
         factoryGirl.withOptions({ afterBuild: spy });
         const dummyAttrs = {};
@@ -378,7 +378,7 @@ describe('FactoryGirl', function() {
 
     it(
       'accepts afterBuild callback returning a promise',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         factoryGirl.withOptions({
           afterBuild: model => Promise.resolve(model),
         });
@@ -388,13 +388,13 @@ describe('FactoryGirl', function() {
     );
   });
 
-  describe('#create', function() {
+  describe('#create', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory and adapter',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy1 = sinon.spy(factoryGirl, 'getFactory');
         const spy2 = sinon.spy(factoryGirl, 'getAdapter');
         await factoryGirl.create('factory1');
@@ -407,7 +407,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls create on the factory with adapter, attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'create');
         const dummyAttrs = {};
@@ -423,7 +423,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const modelP = factoryGirl.create('factory1');
       expect(modelP.then).to.be.a('function');
       return expect(modelP).to.be.eventually.fulfilled;
@@ -431,7 +431,7 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to model correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = await factoryGirl.create('factory1');
         expect(model).to.be.an.instanceof(DummyModel);
         expect(model.attrs.name).to.be.equal('Mark');
@@ -441,7 +441,7 @@ describe('FactoryGirl', function() {
 
     it(
       'invokes afterCreate callback option if any',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(model => model);
         factoryGirl.withOptions({ afterCreate: spy });
         const dummyAttrs = {};
@@ -461,7 +461,7 @@ describe('FactoryGirl', function() {
 
     it(
       'accepts afterCreate callback returning a promise',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         factoryGirl.withOptions({
           afterCreate: model => Promise.resolve(model),
         });
@@ -471,13 +471,13 @@ describe('FactoryGirl', function() {
     );
   });
 
-  describe('#attrsMany', function() {
+  describe('#attrsMany', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(factoryGirl, 'getFactory');
         await factoryGirl.attrsMany('factory1', 10);
         expect(spy).to.have.been.calledWith('factory1');
@@ -487,7 +487,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls attrsMany on the factory with num, attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'attrsMany');
         const dummyAttrs = {};
@@ -503,7 +503,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const attrsP = factoryGirl.attrsMany('factory1', 1);
       expect(attrsP.then).to.be.a('function');
       return expect(attrsP).to.be.eventually.fulfilled;
@@ -511,11 +511,11 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to attrs array correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await factoryGirl.attrsMany('factory1', 10);
         expect(attrs).to.be.an('array');
         expect(attrs).to.have.lengthOf(10);
-        attrs.forEach(function(attr) {
+        attrs.forEach(function (attr) {
           expect(attr).to.be.eql({
             name: 'Mark',
             age: 40,
@@ -525,13 +525,13 @@ describe('FactoryGirl', function() {
     );
   });
 
-  describe('#buildMany', function() {
+  describe('#buildMany', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory and adapter',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy1 = sinon.spy(factoryGirl, 'getFactory');
         const spy2 = sinon.spy(factoryGirl, 'getAdapter');
         await factoryGirl.buildMany('factory1', 2);
@@ -544,7 +544,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls factory#buildMany with adapter, num, attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'buildMany');
         const dummyAttrs = {};
@@ -566,7 +566,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const modelP = factoryGirl.buildMany('factory1', 2);
       expect(modelP.then).to.be.a('function');
       return expect(modelP).to.be.eventually.fulfilled;
@@ -574,10 +574,10 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to models array correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const models = await factoryGirl.buildMany('factory1', 5);
         expect(models).to.be.an('array');
-        models.forEach(function(model) {
+        models.forEach(function (model) {
           expect(model).to.be.an.instanceof(DummyModel);
           expect(model.attrs.name).to.be.equal('Mark');
           expect(model.attrs.age).to.be.equal(40);
@@ -587,7 +587,7 @@ describe('FactoryGirl', function() {
 
     it(
       'invokes afterBuild callback option if any for each model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(model => model);
         factoryGirl.withOptions({ afterBuild: spy });
         const dummyAttrs = {};
@@ -599,7 +599,7 @@ describe('FactoryGirl', function() {
           dummyBuildOptions,
         );
         expect(spy).to.have.callCount(5);
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i += 1) {
           expect(spy.getCall(i)).to.have.been.calledWith(
             models[i],
             dummyAttrs,
@@ -611,26 +611,26 @@ describe('FactoryGirl', function() {
 
     it(
       'accepts afterBuild callback returning a promise',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         factoryGirl.withOptions({
           afterBuild: model => Promise.resolve(model),
         });
         const models = await factoryGirl.buildMany('factory1', 5);
         expect(models).to.be.an('array');
-        models.forEach(function(model) {
+        models.forEach(function (model) {
           expect(model).to.be.an.instanceof(DummyModel);
         });
       }),
     );
   });
 
-  describe('#createMany', function() {
+  describe('#createMany', function () {
     const factoryGirl = new FactoryGirl();
     factoryGirl.define('factory1', DummyModel, { name: 'Mark', age: 40 });
 
     it(
       'requests correct factory and adapter',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy1 = sinon.spy(factoryGirl, 'getFactory');
         const spy2 = sinon.spy(factoryGirl, 'getAdapter');
         await factoryGirl.createMany('factory1', 2);
@@ -643,7 +643,7 @@ describe('FactoryGirl', function() {
 
     it(
       'calls factory#createMany with adapter, num, attrs and buildOptions',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const factory = factoryGirl.getFactory('factory1');
         const spy = sinon.spy(factory, 'createMany');
         const dummyAttrs = {};
@@ -665,7 +665,7 @@ describe('FactoryGirl', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const modelP = factoryGirl.createMany('factory1', 2);
       expect(modelP.then).to.be.a('function');
       return expect(modelP).to.be.eventually.fulfilled;
@@ -673,10 +673,10 @@ describe('FactoryGirl', function() {
 
     it(
       'resolves to models array correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const models = await factoryGirl.createMany('factory1', 5);
         expect(models).to.be.an('array');
-        models.forEach(function(model) {
+        models.forEach(function (model) {
           expect(model).to.be.an.instanceof(DummyModel);
           expect(model.attrs.name).to.be.equal('Mark');
           expect(model.attrs.age).to.be.equal(40);
@@ -686,7 +686,7 @@ describe('FactoryGirl', function() {
 
     it(
       'invokes afterCreate callback option if any for each model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const spy = sinon.spy(model => model);
         factoryGirl.withOptions({ afterCreate: spy });
         const dummyAttrs = {};
@@ -698,7 +698,7 @@ describe('FactoryGirl', function() {
           dummyBuildOptions,
         );
         expect(spy).to.have.callCount(5);
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 5; i += 1) {
           expect(spy.getCall(i)).to.have.been.calledWith(
             models[i],
             dummyAttrs,
@@ -710,28 +710,28 @@ describe('FactoryGirl', function() {
 
     it(
       'accepts afterCreate callback returning a promise',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         factoryGirl.withOptions({
           afterCreate: model => Promise.resolve(model),
         });
         const models = await factoryGirl.createMany('factory1', 5);
         expect(models).to.be.an('array');
-        models.forEach(function(model) {
+        models.forEach(function (model) {
           expect(model).to.be.an.instanceof(DummyModel);
         });
       }),
     );
   });
 
-  describe('#withOptions', function() {
-    it('can replace options', function() {
+  describe('#withOptions', function () {
+    it('can replace options', function () {
       const factoryGirl = new FactoryGirl({ a: 1 });
       const newOptions = { hello: 'world' };
       factoryGirl.withOptions(newOptions);
       expect(factoryGirl.options).to.be.eql(newOptions);
     });
 
-    it('can merge options', function() {
+    it('can merge options', function () {
       const originalOptions = { a: 1 };
       const factoryGirl = new FactoryGirl(originalOptions);
       const newOptions = { hello: 'world' };
@@ -743,11 +743,11 @@ describe('FactoryGirl', function() {
     });
   });
 
-  describe('#addToCreatedList', function() {
+  describe('#addToCreatedList', function () {
     const factoryGirl = new FactoryGirl();
     const dummyAdapter = new DummyAdapter();
 
-    it('adds one model to the list', function() {
+    it('adds one model to the list', function () {
       const spy = sinon.spy(factoryGirl.created, 'add');
       const dummyModel = new DummyModel();
       factoryGirl.addToCreatedList(dummyAdapter, dummyModel);
@@ -755,7 +755,7 @@ describe('FactoryGirl', function() {
       factoryGirl.created.add.restore();
     });
 
-    it('adds multiple models to the list', function() {
+    it('adds multiple models to the list', function () {
       const spy = sinon.spy(factoryGirl.created, 'add');
       const dummyModels = [
         new DummyModel(),
@@ -764,15 +764,15 @@ describe('FactoryGirl', function() {
       ];
       factoryGirl.addToCreatedList(dummyAdapter, dummyModels);
       expect(spy).to.have.callCount(3);
-      spy.args.forEach(function(arg, index) {
+      spy.args.forEach(function (arg, index) {
         expect(arg[0]).to.be.eql([dummyAdapter, dummyModels[index]]);
       });
       factoryGirl.created.add.restore();
     });
   });
 
-  describe('#cleanup', function() {
-    it('cleans up the factory', function() {
+  describe('#cleanup', function () {
+    it('cleans up the factory', function () {
       const factoryGirl = new FactoryGirl();
       const dummyAdapter = new DummyAdapter();
       const dummyAdapter2 = new DummyAdapter();

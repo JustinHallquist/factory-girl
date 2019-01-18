@@ -1,14 +1,14 @@
 import '../test-helper/testUtils';
-import ChanceGenerator from '../../src/generators/ChanceGenerator';
 import { expect } from 'chai';
+import ChanceGenerator from '../../src/generators/ChanceGenerator';
 // import _debug from 'debug';
 import asyncFunction from '../test-helper/asyncFunction';
 
 // const debug = _debug('ChanceGeneratorSpec');
 
-describe('ChanceGenerator', function() {
-  describe('#constructor', function() {
-    it('validates the passed chance method', function() {
+describe('ChanceGenerator', function () {
+  describe('#constructor', function () {
+    it('validates the passed chance method', function () {
       /* eslint-disable no-new */
       function invalidMethod() {
         new ChanceGenerator({}).generate('invalidMethodName');
@@ -24,10 +24,10 @@ describe('ChanceGenerator', function() {
     });
   });
 
-  describe('#generate', function() {
+  describe('#generate', function () {
     it(
       'resolves to a value',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const chance = new ChanceGenerator({});
         const val = await chance.generate('bool', { likelihood: 30 });
         expect(val).to.exist;
@@ -36,7 +36,7 @@ describe('ChanceGenerator', function() {
 
     it(
       'supports multiple parameters',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const chance = new ChanceGenerator({});
         const val = await chance.generate(
           'pickset',

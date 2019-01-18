@@ -1,8 +1,8 @@
 import '../test-helper/testUtils';
-import BookshelfAdapter from '../../src/adapters/BookshelfAdapter';
 import _bookshelf from 'bookshelf';
 import _knex from 'knex';
 import { expect } from 'chai';
+import BookshelfAdapter from '../../src/adapters/BookshelfAdapter';
 
 const knex = _knex({
   client: 'sqlite3',
@@ -18,10 +18,10 @@ const Kitten = bookshelf.Model.extend({
   tableName: 'kittens',
 });
 
-describe('BookshelfAdapterIntegration', function() {
+describe('BookshelfAdapterIntegration', function () {
   const adapter = new BookshelfAdapter();
 
-  before(function(done) {
+  before(function (done) {
     bookshelf.knex.schema
       .createTable('kittens', table => {
         table.increments();
@@ -30,7 +30,7 @@ describe('BookshelfAdapterIntegration', function() {
       .then(() => done());
   });
 
-  it('builds models and access attributes correctly', function(done) {
+  it('builds models and access attributes correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
     expect(kitten).to.be.instanceof(Kitten);
     let name = adapter.get(kitten, 'name', Kitten);
@@ -44,7 +44,7 @@ describe('BookshelfAdapterIntegration', function() {
     done();
   });
 
-  it('saves models correctly', function(done) {
+  it('saves models correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
     adapter
       .save(kitten, Kitten)
@@ -57,7 +57,7 @@ describe('BookshelfAdapterIntegration', function() {
       .catch(err => done(err));
   });
 
-  it('destroys models correctly', function(done) {
+  it('destroys models correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'smellyCat' });
     adapter
       .save(kitten, Kitten)

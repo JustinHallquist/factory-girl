@@ -1,21 +1,21 @@
 import '../test-helper/testUtils';
-import ObjectAdapter from '../../src/adapters/ObjectAdapter';
 import { expect } from 'chai';
+import ObjectAdapter from '../../src/adapters/ObjectAdapter';
 import DummyModel from '../test-helper/DummyModel';
 import asyncFunction from '../test-helper/asyncFunction';
 
-describe('ObjectAdapter', function() {
-  it('can be created', function() {
+describe('ObjectAdapter', function () {
+  it('can be created', function () {
     const adapter = new ObjectAdapter();
     expect(adapter).to.be.an.instanceof(ObjectAdapter);
   });
 
   const adapter = new ObjectAdapter();
 
-  describe('#build', function() {
+  describe('#build', function () {
     it(
       'builds the model',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = adapter.build(DummyModel, { a: 1, b: 2 });
         expect(model).to.be.an.instanceof(DummyModel);
         expect(model.a).to.be.equal(1);
@@ -24,8 +24,8 @@ describe('ObjectAdapter', function() {
     );
   });
 
-  describe('#save', function() {
-    it('returns a promise', function() {
+  describe('#save', function () {
+    it('returns a promise', function () {
       const model = new DummyModel();
       const savedModelP = adapter.save(model, DummyModel);
       expect(savedModelP.then).to.be.a('function');
@@ -34,7 +34,7 @@ describe('ObjectAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const savedModel = await adapter.save(model, DummyModel);
         expect(savedModel).to.be.equal(model);
@@ -42,8 +42,8 @@ describe('ObjectAdapter', function() {
     );
   });
 
-  describe('#destroy', function() {
-    it('returns a promise', function() {
+  describe('#destroy', function () {
+    it('returns a promise', function () {
       const model = new DummyModel();
       const destroyedModelP = adapter.destroy(model, DummyModel);
       expect(destroyedModelP.then).to.be.a('function');
@@ -52,7 +52,7 @@ describe('ObjectAdapter', function() {
 
     it(
       'resolves to the object itself',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const model = new DummyModel();
         const destroyedModel = await adapter.destroy(model, DummyModel);
         expect(destroyedModel).to.be.equal(model);

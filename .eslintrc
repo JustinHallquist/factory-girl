@@ -6,6 +6,12 @@
     "no-param-reassign": "off",
     "no-use-before-define": "off",
     "arrow-parens": ["error", "as-needed"],
-    "prefer-rest-params": "off"
+    "prefer-rest-params": "off",
+    "class-methods-use-this": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-restricted-syntax": "off",
+    "no-multi-assign": "off",
+    "no-prototype-builtins": "off",
+    "no-await-in-loop": "off"
   }
 }

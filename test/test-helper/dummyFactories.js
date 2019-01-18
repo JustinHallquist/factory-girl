@@ -1,12 +1,14 @@
 import Factory from '../../src';
-import { User, Address, PhoneNumber, DummyModel } from './dummyModels';
+import {
+  User, Address, PhoneNumber, DummyModel,
+} from './dummyModels';
 
 Factory.define('PhoneNumber', PhoneNumber, {
   type: 'mobile',
   number: '1234567890',
 });
 
-Factory.define('PhoneNumber2', PhoneNumber, function(buildOptions) {
+Factory.define('PhoneNumber2', PhoneNumber, function (buildOptions) {
   const attrs = {
     type: 'mobile',
     number: Factory.seq('PhoneNumber2.number', n => `1234567890-${n}`),

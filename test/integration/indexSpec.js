@@ -3,16 +3,16 @@ import Factory, { ObjectAdapter } from '../../src';
 import '../test-helper/dummyFactories';
 import asyncFunction from '../test-helper/asyncFunction';
 
-describe('indexIntegration', function() {
+describe('indexIntegration', function () {
   Factory.setAdapter(new ObjectAdapter());
-  beforeEach(function() {
+  beforeEach(function () {
     Factory.cleanUp();
   });
 
-  describe('PhoneNumber factory', function() {
+  describe('PhoneNumber factory', function () {
     it(
       'can get attrs',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await Factory.attrs('PhoneNumber');
         expect(attrs).to.be.eql({
           type: 'mobile',
@@ -23,7 +23,7 @@ describe('indexIntegration', function() {
 
     it(
       'can override attrs',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await Factory.attrs('PhoneNumber', {
           number: '0987654321',
         });
@@ -36,7 +36,7 @@ describe('indexIntegration', function() {
 
     it(
       'can override attrs with generators as well',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await Factory.attrs('PhoneNumber', {
           alternate: Factory.assocAttrs('PhoneNumber'),
         });
@@ -49,7 +49,7 @@ describe('indexIntegration', function() {
 
     it(
       'can get multiple attrs',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await Factory.attrsMany('PhoneNumber', 3, {
           number: Factory.seq('PhoneNumber.override', n => `123-${n}`),
         });
@@ -60,17 +60,17 @@ describe('indexIntegration', function() {
 
     it(
       'can use chance generator',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const attrs = await Factory.attrs('User');
         expect(attrs.bio).to.exist;
       }),
     );
   });
 
-  describe('sequences', function() {
+  describe('sequences', function () {
     it(
       'generates sequences correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const objSeq1 = await Factory.build('ObjSeq');
         const objSeq2 = await Factory.build('ObjSeq');
 

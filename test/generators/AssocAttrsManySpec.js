@@ -1,17 +1,17 @@
 import '../test-helper/testUtils';
-import AssocAttrsMany from '../../src/generators/AssocAttrsMany';
 import { expect } from 'chai';
+import sinon from 'sinon';
+import AssocAttrsMany from '../../src/generators/AssocAttrsMany';
 import DummyFactoryGirl from '../test-helper/DummyFactoryGirl';
 import asyncFunction from '../test-helper/asyncFunction';
-import sinon from 'sinon';
 
-describe('AssocAttrsMany', function() {
+describe('AssocAttrsMany', function () {
   const factoryGirl = new DummyFactoryGirl();
 
-  describe('#generate', function() {
+  describe('#generate', function () {
     it(
       'calls attrsMany on factoryGirl',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         sinon.spy(factoryGirl, 'attrsMany');
         const assocAttrsMany = new AssocAttrsMany(factoryGirl);
         await assocAttrsMany.generate('model', 10);
@@ -22,7 +22,7 @@ describe('AssocAttrsMany', function() {
 
     it(
       'passes arguments to attrsMany correctly',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         sinon.spy(factoryGirl, 'attrsMany');
         const dummyAttrs = {};
         const dummyBuildOptions = {};
@@ -43,7 +43,7 @@ describe('AssocAttrsMany', function() {
       }),
     );
 
-    it('returns a promise', function() {
+    it('returns a promise', function () {
       const assocAttrsMany = new AssocAttrsMany(factoryGirl);
       const modelsP = assocAttrsMany.generate('model', 10);
       expect(modelsP.then).to.be.a('function');
@@ -52,7 +52,7 @@ describe('AssocAttrsMany', function() {
 
     it(
       'resolves to array returned by attrsMany',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const assocAttrsMany = new AssocAttrsMany(factoryGirl);
         const models = await assocAttrsMany.generate('model', 10);
         expect(models).to.be.an('array');
@@ -64,7 +64,7 @@ describe('AssocAttrsMany', function() {
 
     it(
       'resolves to array of keys if key is set',
-      asyncFunction(async function() {
+      asyncFunction(async function () {
         const assocAttrsMany = new AssocAttrsMany(factoryGirl);
         const models = await assocAttrsMany.generate('model', 10, 'name');
         expect(models).to.have.lengthOf(2);
