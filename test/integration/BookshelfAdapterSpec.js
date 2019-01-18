@@ -30,6 +30,8 @@ describe('BookshelfAdapterIntegration', function () {
       .then(() => done());
   });
 
+  after(() => knex.destroy());
+
   it('builds models and access attributes correctly', function (done) {
     const kitten = adapter.build(Kitten, { name: 'fluffy' });
     expect(kitten).to.be.instanceof(Kitten);
